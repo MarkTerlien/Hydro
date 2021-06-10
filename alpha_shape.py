@@ -35,7 +35,7 @@ j = 0
 while row :
     x = float(row.split(',')[0])
     y = float(row.split(',')[1])
-    if i % 25 == 0: 
+    if i % 10 == 0: 
         coordinate = []
         coordinate.append(x)
         coordinate.append(y)
