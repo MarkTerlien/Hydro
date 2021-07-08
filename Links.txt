@@ -1,0 +1,3 @@
+https://maps.ngdc.noaa.gov/viewers/bathymetry/
+https://portal.emodnet-bathymetry.eu/
+https://www.emodnet-bathymetry.eu/search
