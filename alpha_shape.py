@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 sys.path.insert(0, os.path.dirname(os.getcwd()))
 import alphashape
-RADIUS = 3700
+RADIUS = 1500
 
 # Alpha shapes are often used to generalize bounding polygons containing sets of points. The alpha parameter is defined as the value a, such that an edge of a disk of radius 1/a can be drawn between any two edge members of a set of points and still contain all the points.
 
@@ -17,6 +17,7 @@ print("Read file")
 points_2d = []
 fIn = open(r'data\Portsmouth\H07140.xyz','r')
 fIn = open(r'data\Portsmouth\H08090.xyz','r')
+fIn = open(r'data\Portsmouth\H09012.xyz','r')
 row = fIn.readline()
 i = 0
 j = 0
