@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import psycopg2
 import glob
+import pandas as pd # Dataframe interface
 
 from datetime import datetime, timedelta
 from descartes import PolygonPatch
@@ -33,6 +34,9 @@ for file_name in glob.glob("data\\Portsmouth\\*.xyz"):
     # Give filename
     print("Read file " + file_name)
 
+    ##################################
+    # Calculate hull and import survey
+    ##################################
     # Get name of the survey
     survey_name = file_name[16:][:-4]
     print(survey_name)
@@ -84,11 +88,36 @@ for file_name in glob.glob("data\\Portsmouth\\*.xyz"):
     # Insert hull
     cur.execute("INSERT INTO public.survey(name, organisation, nr_of_points, hull, survey_date) VALUES (%s, %s, %s, ST_GeomFromText(%s, 4326), %s )",(survey_name, survey_organisation, i, alpha_shape_wkt, survey_date))
     survey_count = survey_count + 1
-    #print("radius = " + str(1/RADIUS))
-    #fOut = open('data/wkt.txt','w')
-    #fOut.write(alpha_shape.wkt)
-    #fOut.close()
-    
+
+    # Get generated survey_id
+    cur.execute('select id from public.survey where name = %s',(survey_name,))
+    survey_id = cur.fetchone()[0]
+
+    #################################################
+    # Insert the points into the table with soundings
+    #################################################
+
+    # Start
+    print('Insert soundings for survey ' + str(survey_id))
+
+    # Inlezen van csv-bstand in dataframe
+    df = pd.read_csv(file_name,sep =' ', names=['x', 'y', 'depth'])
+
+    # Add survey id as column
+    df['survey_id'] = survey_id 
+
+    # 5. Kolommen in dataframe in de juiste volgorde zetten
+    df = df[['depth','x', 'y', 'survey_id']]
+
+    # 6. Rijen van dataframe in numpy lijst zetten
+    rows = [tuple(x) for x in df.to_numpy()]
+
+    # 8.Opstellen van SQL insert statement. Volgorde kolommen moet overeenkomen met volgorde in lijst
+    sql_insert = 'insert into sounding(depth, geom, survey_id)' 
+    sql_insert = sql_insert + ' values (%s, St_SetSRID(ST_makePoint(%s,%s),4326), %s)'
+            
+    # 9. Uitvoeren insert statement 
+    cur.executemany(sql_insert, rows)
 
 #print("Plot points and hulls")
 #fig, ax = plt.subplots()
