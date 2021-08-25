@@ -12,8 +12,11 @@ import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.dirname(os.getcwd()))
 
 import alphashape
-RADIUS = 1000
+MB_RADIUS = 1000
 #RADIUS = 100
+# List of SB surveys 
+SB_SURVEYS = ['H04805','H07140','H08938','H09063','H09064','H07127','H00741A','H00741B','H03032']
+SB_RADIUS = 100
 
 # Build connect string
 db_connect="dbname=hydro user=postgres password=postgres"
@@ -43,7 +46,7 @@ for file_name in glob.glob("data\\Portsmouth\\*.xyz"):
 
     # Delete survey from table
     print("Delete survey")
-    cur.execute("delete from public.survey where name = %s", (survey_name,))
+    cur.execute("delete from public.survey where survey_name = %s", (survey_name,))
 
     # Open file
     points_2d = []
@@ -76,9 +79,15 @@ for file_name in glob.glob("data\\Portsmouth\\*.xyz"):
     else :
         survey_organisation = 'Fugro'
 
+    # Determine radius
+    if survey_name in SB_SURVEYS : 
+        radius = SB_RADIUS
+    else :
+        radius = MB_RADIUS
+
     # Calculate the hull
     print("Calculate hull")
-    alpha_shape = alphashape.alphashape(points_2d, RADIUS)
+    alpha_shape = alphashape.alphashape(points_2d, radius)
     alpha_shape_wkt = alpha_shape.wkt
 
     # Get date
@@ -86,11 +95,11 @@ for file_name in glob.glob("data\\Portsmouth\\*.xyz"):
     print(survey_date)
     
     # Insert hull
-    cur.execute("INSERT INTO public.survey(name, organisation, nr_of_points, hull, survey_date) VALUES (%s, %s, %s, ST_GeomFromText(%s, 4326), %s )",(survey_name, survey_organisation, i, alpha_shape_wkt, survey_date))
+    cur.execute("INSERT INTO public.survey(survey_name, contractor, nr_of_points, hull, survey_date) VALUES (%s, %s, %s, ST_GeomFromText(%s, 4326), %s )",(survey_name, survey_organisation, i, alpha_shape_wkt, survey_date))
     survey_count = survey_count + 1
 
     # Get generated survey_id
-    cur.execute('select id from public.survey where name = %s',(survey_name,))
+    cur.execute('select survey_id from public.survey where survey_name = %s',(survey_name,))
     survey_id = cur.fetchone()[0]
 
     #################################################
