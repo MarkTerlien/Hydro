@@ -12,6 +12,8 @@ import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.dirname(os.getcwd()))
 
 import alphashape
+
+# Radius is 1/RADIUS. MB has smaller radius than SB
 MB_RADIUS = 1000
 #RADIUS = 100
 # List of SB surveys 
