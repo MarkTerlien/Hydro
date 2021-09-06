@@ -13,3 +13,6 @@ https://nauticalcharts.noaa.gov/data/gis-data-and-services.html
 Products:
 https://commercialmarine.c-map.com/en/marine-hydrographic-services
 
+Weather API:
+https://dev.meteostat.net/api/#sign-up 
+
