@@ -1,0 +1,50 @@
+<PAMDataset>
+  <Subdataset name="analysis_uncertainty">
+    <PAMDataset>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MAXIMUM">343</MDI>
+          <MDI key="STATISTICS_MEAN">37.070320318509</MDI>
+          <MDI key="STATISTICS_MINIMUM">10</MDI>
+          <MDI key="STATISTICS_STDDEV">27.155390166913</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="analysed_sst">
+    <PAMDataset>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MAXIMUM">3134</MDI>
+          <MDI key="STATISTICS_MEAN">1201.3641570201</MDI>
+          <MDI key="STATISTICS_MINIMUM">-187</MDI>
+          <MDI key="STATISTICS_STDDEV">1125.4791574446</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="sea_ice_fraction">
+    <PAMDataset>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MAXIMUM">100</MDI>
+          <MDI key="STATISTICS_MEAN">14.98816285869</MDI>
+          <MDI key="STATISTICS_MINIMUM">0</MDI>
+          <MDI key="STATISTICS_STDDEV">34.178436966301</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+  <Subdataset name="mask">
+    <PAMDataset>
+      <PAMRasterBand band="1">
+        <Metadata>
+          <MDI key="STATISTICS_MAXIMUM">9</MDI>
+          <MDI key="STATISTICS_MEAN">2.2770349537041</MDI>
+          <MDI key="STATISTICS_MINIMUM">1</MDI>
+          <MDI key="STATISTICS_STDDEV">2.5365713982664</MDI>
+        </Metadata>
+      </PAMRasterBand>
+    </PAMDataset>
+  </Subdataset>
+</PAMDataset>
