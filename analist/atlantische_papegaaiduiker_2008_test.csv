@@ -1,0 +1,5 @@
+﻿timestamp,long,lat,comments,migration_,sensor_typ,individual,tag_ident,ind_ident,study_name,utm_east,utm_north,utm_zone,study_tz,study_ts,date,time
+2008-01-01 00:00:00,-31.47,55.1,V485077_t1,migration,solar-geolocator,Fratercula arctica,gl2345,V485077,Atlantic puffin in Iceland (Petersen),597624.2889594925,6106988.551180141,25N,GMT-02:00,2007-12-31 22:00:00,20210929,
+2008-01-01 12:00:00,-32.28,54.49,V485077_t1,migration,solar-geolocator,Fratercula arctica,gl2345,V485077,Atlantic puffin in Iceland (Petersen),546639.2865431193,6038280.076365599,25N,GMT-02:00,2008-01-01 10:00:00,20210929,
+2008-01-02 00:00:00,-31.72,54.16,V485077_t1,migration,solar-geolocator,Fratercula arctica,gl2345,V485077,Atlantic puffin in Iceland (Petersen),583579.1643853852,6002080.448662057,25N,GMT-02:00,2008-01-01 22:00:00,20210929,
+2008-01-02 12:00:00,-31.92,54.02,V485077_t1,migration,solar-geolocator,Fratercula arctica,gl2345,V485077,Atlantic puffin in Iceland (Petersen),570758.2744865189,5986286.557316007,25N,GMT-02:00,2008-01-02 10:00:00,20210929,

@@ -7,24 +7,30 @@ import gdalnumeric
 import osr
 import math
 import struct
+import pandas as pd
 
 print(gdal.VersionInfo('VERSION_NUM'))
+gdal.SetConfigOption('CPL_LOG', 'NULL')
 
 # Copy API file .cdsapirc to %USERPROFILE%
 # Metadata: https://cds.climate.copernicus.eu/cdsapp#!/dataset/satellite-sea-surface-temperature?tab=overview
 
+# For reading NetCDF see: https://towardsdatascience.com/read-netcdf-data-with-python-901f7ff61648
+
 # Output folder
 OUTPUT_FOLDER = 'c:/temp/'
 
+# File name 
+INPUTFILE = 'analist/atlantische_papegaaiduiker_2008_test.csv'
+OUTPUTFILE = 'analist/atlantische_papegaaiduiker_2008_out.csv'
+
 # Filename NetCDF file
 NETCDF_FILE = '120000-ESACCI-L4_GHRSST-SSTdepth-OSTIA-GLOB_CDR2.0-v02.0-fv01.0.nc'
-SCALE_FACTOR = 0.0099999998
-OFFSET = 273.14999
 
 # Dates
-years = ['2011'] #,'2017']
-months = ['01'] #,'February','March']
-days = ['01'] #,'02','03']
+years = ['2008'] #,'2017']
+months = ['01','02'] #,'February','March']
+days = ['01','02','03','04','05','06','07','08', '09', '10'] #,'02','03']
 
 # Function to get value from raster on x,y location
 def get_value_from_raster (raster_bestand_naam, x_in, y_in):
@@ -33,22 +39,22 @@ def get_value_from_raster (raster_bestand_naam, x_in, y_in):
     
         # Specify the layer name to read
         layer_name = "analysed_sst"
-        print(raster_bestand_naam)
-        netcdf_fname = "c:/temp/20110102120000-ESACCI-L4_GHRSST-SSTdepth-OSTIA-GLOB_CDR2.0-v02.0-fv01.0.nc"
 
         # Open rasterbestand
         raster_bestand_in = gdal.Open("NETCDF:{0}:{1}".format(raster_bestand_naam, layer_name))
+        offset = float(raster_bestand_in.GetMetadata()['analysed_sst#add_offset'])
+        scale_factor = float(raster_bestand_in.GetMetadata()['analysed_sst#scale_factor'])
         
         # Haal geotransform array and rasterband
         gt = raster_bestand_in.GetGeoTransform()
         rb = raster_bestand_in.GetRasterBand(1)
-        
+         
         # Get row and kolom
         px = math.floor((x_in - gt[0]) / gt[1]) #x pixel
         py = math.floor((y_in - gt[3]) / gt[5]) #y pixel
 
         # Get value from raster
-        intval=(rb.ReadAsArray(px,py,1,1) * SCALE_FACTOR) + OFFSET
+        intval=(rb.ReadAsArray(px,py,1,1) * scale_factor) + offset
         
         # Sluit raster bestand
         raster_bestand_in = None
@@ -61,28 +67,16 @@ def get_value_from_raster (raster_bestand_naam, x_in, y_in):
         print('Error function get_value_from_raster')
         print(e)
 
-# get UTM zone
-def get_utm_zone(utm_zone):
+# Start script
+print('Start')
 
-    # Get zone and N/S from input
-    zone = utm_zone[:-1]
-    if utm_zone[-1] == 'S' :
-        south = True
-    else:
-        south = False
+# Read file into array
+input_file = open(INPUTFILE,'r')
+file_rows = input_file.readlines()
+input_file.close()
 
-    # Get code
-    epsg_code = 32600
-    epsg_code += int(zone)
-    if south is True:
-        epsg_code += 100
-
-    print (epsg_code) # will be 32736
-
-    spatref = osr.SpatialReference()
-    spatref.ImportFromEPSG(epsg_code)
-    wkt_crs = spatref.ExportToWkt()
-    print (wkt_crs) 
+# Read file into dataframe
+df_locations = pd.read_csv(INPUTFILE, index_col=0, sep = ',')
 
 # Get API handle
 c = cdsapi.Client()
@@ -121,14 +115,32 @@ for year in years :
             nc_filename = OUTPUT_FOLDER + year + month + day + NETCDF_FILE
 
             # Open file with locations
-            # For each row
-            # Get location
-            # Determine EPSG code with get_utm_zone('24S')
-            # Transform to WGS84
+            print("Getting temperature from file " + str(nc_filename))
+            i = 0
+            temperature_list = []
+            for file_row in file_rows :
 
-            # Get temperature
-            temperature = get_value_from_raster (nc_filename, -16.4544, 28.3548)[0][0]
-            print(temperature)
+                # Skip first line
+                if i > 0 :
+                
+                    # Get temperature
+                    x = float(file_row.split(',')[1])
+                    y = float(file_row.split(',')[2])
+                    temperature = round(get_value_from_raster (nc_filename, x, y)[0][0],2)
+                        
+                    # Append temperature
+                    temperature_list.append(temperature)
+
+                # Next row and progress indication
+                i += 1
+                if i % 500 == 0:
+                    print(str(i) + ' locations processed')
+            
+            # Print number of locations processed
+            print(str(i) + ' locations processed')
+
+            # Add to existing dataframe
+            df_locations[year + month + day] = temperature_list
 
             # Remove file and zipfile
             try:
@@ -136,3 +148,14 @@ for year in years :
                 os.remove(dowloadfile)
             except:
                 None
+
+# Remove output file
+if os.path.exists(OUTPUTFILE):
+    os.remove(OUTPUTFILE)
+
+# Write output to file
+df_locations.to_csv(OUTPUTFILE)
+
+# End script
+print("End script")
+
