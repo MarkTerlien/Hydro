@@ -21,16 +21,17 @@ gdal.SetConfigOption('CPL_LOG', 'NULL')
 OUTPUT_FOLDER = 'c:/temp/'
 
 # File name 
-INPUTFILE = 'analist/atlantische_papegaaiduiker_2008_test.csv'
+# INPUTFILE = 'analist/atlantische_papegaaiduiker_2008_test.csv'
+INPUTFILE = 'analist/atlantische_papegaaiduiker_2008.csv'
 OUTPUTFILE = 'analist/atlantische_papegaaiduiker_2008_out.csv'
 
 # Filename NetCDF file
 NETCDF_FILE = '120000-ESACCI-L4_GHRSST-SSTdepth-OSTIA-GLOB_CDR2.0-v02.0-fv01.0.nc'
 
 # Dates
-years = ['2008'] #,'2017']
-months = ['01','02'] #,'February','March']
-days = ['01','02','03','04','05','06','07','08', '09', '10'] #,'02','03']
+years = ['2008'] 
+months = ['01','02','03','04','05','06','07','08','09','10','11','12'] 
+days = ['01','02','03','04','05','06','07','08','09','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31'] 
 
 # Function to get value from raster on x,y location
 def get_value_from_raster (raster_bestand_naam, x_in, y_in):
@@ -42,6 +43,8 @@ def get_value_from_raster (raster_bestand_naam, x_in, y_in):
 
         # Open rasterbestand
         raster_bestand_in = gdal.Open("NETCDF:{0}:{1}".format(raster_bestand_naam, layer_name))
+
+        # Get offset and scale factor from metadata
         offset = float(raster_bestand_in.GetMetadata()['analysed_sst#add_offset'])
         scale_factor = float(raster_bestand_in.GetMetadata()['analysed_sst#scale_factor'])
         
@@ -90,64 +93,73 @@ for year in years :
         # Iterate over days
         for day in days :
             
-            # Define name of download file
-            dowloadfile = OUTPUT_FOLDER + year + month + day + '.zip'
+            # Handle non existing days
+            try :
 
-            # Execute API call for year/month/day
-            c.retrieve(
-                'satellite-sea-surface-temperature',
-                {
-                    'variable': 'all',
-                    'format': 'zip',
-                    'processinglevel': 'level_4',
-                    'sensor_on_satellite': 'combined_product',
-                    'version': '2_0',
-                    'year': [year,],
-                    'month': [month,],
-                    'day': [day,]
-                },
-                dowloadfile)
+                # Define name of download file
+                dowloadfile = OUTPUT_FOLDER + year + month + day + '.zip'
 
-            # Unzip file
-            shutil.unpack_archive(dowloadfile, OUTPUT_FOLDER)
+                # Execute API call for year/month/day
+                c.retrieve(
+                    'satellite-sea-surface-temperature',
+                    {
+                        'variable': 'all',
+                        'format': 'zip',
+                        'processinglevel': 'level_4',
+                        'sensor_on_satellite': 'combined_product',
+                        'version': '2_0',
+                        'year': [year,],
+                        'month': [month,],
+                        'day': [day,]
+                    },
+                    dowloadfile)
 
-            # Define NetCDF filename
-            nc_filename = OUTPUT_FOLDER + year + month + day + NETCDF_FILE
+                # Unzip file
+                shutil.unpack_archive(dowloadfile, OUTPUT_FOLDER)
 
-            # Open file with locations
-            print("Getting temperature from file " + str(nc_filename))
-            i = 0
-            temperature_list = []
-            for file_row in file_rows :
+                # Define NetCDF filename
+                nc_filename = OUTPUT_FOLDER + year + month + day + NETCDF_FILE
 
-                # Skip first line
-                if i > 0 :
+                # Open file with locations
+                print("Getting temperature from file " + str(nc_filename))
+                i = 0
+                temperature_list = []
+                for file_row in file_rows :
+
+                    # Skip first line
+                    if i > 0 :
+                    
+                        # Get temperature
+                        x = float(file_row.split(',')[1])
+                        y = float(file_row.split(',')[2])
+                        temperature = round(get_value_from_raster(nc_filename, x, y)[0][0],2)
+
+                        # Convert from Klevin to Celsius (-273,15)
+                        temperature_celsius = temperature - 273.15
+                            
+                        # Append temperature
+                        temperature_list.append(temperature_celsius)
+
+                    # Next row and progress indication
+                    i += 1
+                    if i % 500 == 0:
+                        print(str(i) + ' locations processed')
                 
-                    # Get temperature
-                    x = float(file_row.split(',')[1])
-                    y = float(file_row.split(',')[2])
-                    temperature = round(get_value_from_raster (nc_filename, x, y)[0][0],2)
-                        
-                    # Append temperature
-                    temperature_list.append(temperature)
+                # Print number of locations processed
+                print(str(i) + ' locations processed')
 
-                # Next row and progress indication
-                i += 1
-                if i % 500 == 0:
-                    print(str(i) + ' locations processed')
-            
-            # Print number of locations processed
-            print(str(i) + ' locations processed')
+                # Add to existing dataframe
+                df_locations[year + month + day] = temperature_list
 
-            # Add to existing dataframe
-            df_locations[year + month + day] = temperature_list
+                # Remove file and zipfile
+                try:
+                    os.remove(nc_filename)
+                    os.remove(dowloadfile)
+                except:
+                    None
 
-            # Remove file and zipfile
-            try:
-                os.remove(nc_filename)
-                os.remove(dowloadfile)
-            except:
-                None
+            except :
+                print('Day ' + str(year + month + day) + ' does not exist')
 
 # Remove output file
 if os.path.exists(OUTPUTFILE):
