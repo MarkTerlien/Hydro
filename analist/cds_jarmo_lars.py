@@ -87,53 +87,60 @@ for file_row in file_rows :
     # Skip first line
     if i > 0 :
     
-        # Get X<Y coordinates
-        x = float(file_row.split(',')[15])
-        y = float(file_row.split(',')[12])
-        print(x)
-        print(y)
+        # Check if line can be processed
+        try:
 
-        # Get year/month/day
-        print('Datum: ' +str(file_row.split(',')[-1].split()[0]))
-        year  = str(file_row.split(',')[-1].split()[0].split('-')[0])
-        month = str(file_row.split(',')[-1].split()[0].split('-')[1])
-        day   = str(file_row.split(',')[-1].split()[0].split('-')[2])
+            # Get X,Y coordinates
+            x = float(file_row.split(',')[15])
+            y = float(file_row.split(',')[12])
+            print(x)
+            print(y)
 
+            # Get year/month/day
+            print('Datum: ' +str(file_row.split(',')[-1].split()[0]))
+            year  = str(file_row.split(',')[-1].split()[0].split('-')[0])
+            month = str(file_row.split(',')[-1].split()[0].split('-')[1])
+            day   = str(file_row.split(',')[-1].split()[0].split('-')[2])
 
-        # Download NetCDF file for year/month/day
-        dowloadfile = OUTPUT_FOLDER + year + month + day + '.zip'
+            # Download NetCDF file for year/month/day
+            dowloadfile = OUTPUT_FOLDER + year + month + day + '.zip'
 
-        # Execute API call for year/month/day
-        c.retrieve(
-            'satellite-sea-surface-temperature',
-            {
-                'variable': 'all',
-                'format': 'zip',
-                'processinglevel': 'level_4',
-                'sensor_on_satellite': 'combined_product',
-                'version': '2_0',
-                'year': [year,],
-                'month': [month,],
-                'day': [day,]
-            },
-            dowloadfile)
+            # Execute API call for year/month/day
+            c.retrieve(
+                'satellite-sea-surface-temperature',
+                {
+                    'variable': 'all',
+                    'format': 'zip',
+                    'processinglevel': 'level_4',
+                    'sensor_on_satellite': 'combined_product',
+                    'version': '2_0',
+                    'year': [year,],
+                    'month': [month,],
+                    'day': [day,]
+                },
+                dowloadfile)
 
-        # Unzip file
-        shutil.unpack_archive(dowloadfile, OUTPUT_FOLDER)
+            # Unzip file
+            shutil.unpack_archive(dowloadfile, OUTPUT_FOLDER)
 
-        # Define NetCDF filename
-        nc_filename = OUTPUT_FOLDER + year + month + day + NETCDF_FILE
+            # Define NetCDF filename
+            nc_filename = OUTPUT_FOLDER + year + month + day + NETCDF_FILE
 
-        # Open file with locations
-        print("Getting temperature from file " + str(nc_filename))
-        temperature = round(get_value_from_raster(nc_filename, x, y)[0][0],2)
+            # Open file with locations
+            print("Getting temperature from file " + str(nc_filename))
+            temperature = round(get_value_from_raster(nc_filename, x, y)[0][0],2)
 
-        # Convert from Klevin to Celsius (-273,15)
-        temperature_celsius = round(temperature - 273.15,2)
-        print('Temperature: ' + str(temperature_celsius))
-            
-        # Append temperature
-        temperature_list.append(temperature_celsius)
+            # Convert from Klevin to Celsius (-273,15)
+            temperature_celsius = round(temperature - 273.15,2)
+            print('Temperature: ' + str(temperature_celsius))
+                
+            # Append temperature
+            temperature_list.append(temperature_celsius)
+
+        except:
+            print("Line cannot be processed")
+            temperature_celsius=-999
+            temperature_list.append(temperature_celsius)
 
     # Next row and progress indication
     i += 1
