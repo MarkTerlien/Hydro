@@ -1,0 +1,29 @@
+
+https://app.quickdatabasediagrams.com/
+
+# Modify this code to update the DB schema diagram.
+# To reset the sample schema, replace everything with
+# two dots ('..' - without quotes).
+
+# Modify this code to update the DB schema diagram.
+# To reset the sample schema, replace everything with
+# two dots ('..' - without quotes).
+
+survey
+-
+surveyId PK integer
+surveyName text
+locality text
+sublocality text
+platform text
+startTime timestamp
+endTime timestamp
+surveyYear integer
+pointCount integer
+geom Geometry(Polygon,4326) 
+
+sounding
+-
+Depth float
+surveyId int FK >- survey.surveyId
+geom Geometry(Point,4326)
