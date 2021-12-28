@@ -109,7 +109,7 @@ try:
     # Make layer for soundings
     soundingLayer = fOut.CreateLayer('Sounding', spatialRef, geom_type=ogr.wkbPoint)
     soundingLayer.CreateField(ogr.FieldDefn('SurveyId', ogr.OFTInteger))
-    soundingLayer.CreateField(ogr.FieldDefn('Depth', ogr.OFSTFloat32))
+    soundingLayer.CreateField(ogr.FieldDefn('Depth', ogr.OFTReal))
     soundingDefn = soundingLayer.GetLayerDefn()
 
     # Write buffer layer
