@@ -18,3 +18,5 @@ https://dev.meteostat.net/api/#sign-up
 
 Python scripts seafloor mapping
 https://www.hydroffice.org/ 
+https://salishsea-meopar-tools.readthedocs.io/en/latest/bathymetry/ExploringBagFiles.html
+https://salishsea-meopar-tools.readthedocs.io/en/latest/bathymetry/index.html
