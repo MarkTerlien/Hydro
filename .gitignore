@@ -1,5 +1,9 @@
 # User-defined files
-survey_database.gpkg
+survey_database.*
+*.bag
+*.xyz
+*.las
+*.laz
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

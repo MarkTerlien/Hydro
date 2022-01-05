@@ -15,7 +15,7 @@ outSpatialRef = osr.SpatialReference()
 outSpatialRef.ImportFromEPSG(32619)
 coordTransform = osr.CoordinateTransformation(inSpatialRef, outSpatialRef)
 
-xyz_file = open('bag_uit.xyz','r')
+xyz_file = open('bag_uit_clip.xyz','r')
 for row in xyz_file:
 
     # Create a geometry from coordinates (input = lat,lon)
@@ -32,7 +32,7 @@ for row in xyz_file:
     y_list.append(float(row.split()[1]))
     z_list.append(float(row.split()[2]))
 
-outfile = laspy.file.File("bag.las", mode="w", header=hdr)
+outfile = laspy.file.File("SWIslay_swath_2m.las", mode="w", header=hdr)
 allx = np.array(x_list) # Four Points
 ally = np.array(y_list)
 allz = np.array(z_list)
@@ -47,7 +47,7 @@ zmax = np.floor(np.max(allz))
 #outfile.header.dataformat_id = 1
 #outfile.header.minor_version = 1
 outfile.header.offset = [xmin,ymin,zmin]
-outfile.header.scale = [1,0.1,0.1]
+outfile.header.scale = [1,1,0.1]
 #outfile.header.min = [xmin, ymin, zmin]
 #outfile.header.max = [xmax, ymax, zmax]
 

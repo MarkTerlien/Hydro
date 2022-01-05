@@ -28,8 +28,8 @@ __author__="Terlien"
 __date__ ="$9-okt-2009 11:50:05$"
 __copyright__ = "Copyright 2009, ATLIS"
 
-INPUT_FILE  = 'H12698_MB_4m_MLLW_2of3.bag'
-
+INPUT_FILE  = 'data/bag/SWIslay_swath_2m.bag'
+VERSION = '1.0'
 
 if __name__ == "__main__":
 
@@ -39,20 +39,22 @@ if __name__ == "__main__":
     print(bag.filename)
 
     for item in bag.items():
-        print(item)
+        None
+        #print(item)
 
     for value in bag.values():
-        print(value)
+        None
+        #print(value)
 
-    print(list(bag['BAG_root'].items()))
+    #print(list(bag['BAG_root'].items()))
 
     root = bag['BAG_root']
-    print(root.name)
-    print(root.parent)
-    print(list(root.items()))
+    #print(root.name)
+    #print(root.parent)
+    #print(list(root.items()))
 
     elev_node = root['elevation']
-    print(type(elev_node))
+    #print(type(elev_node))
     elev = elev_node[()]
 
     print(elev.min(), elev.max())   
@@ -68,15 +70,21 @@ if __name__ == "__main__":
     buffer = BytesIO(metadata_node[()])
     tree = etree.parse(buffer)
     root = tree.getroot()
-    #print(etree.tostring(root, pretty_print=True).decode('ascii'))
+    print(etree.tostring(root, pretty_print=True).decode('ascii'))
 
     metadata_xml = xml.dom.minidom.parseString(etree.tostring(root, pretty_print=True).decode('ascii'))
-    print('westBoundLongitude: ' + str( metadata_xml.getElementsByTagName('gmd:westBoundLongitude')[0].getElementsByTagName('gco:Decimal')[0].firstChild.nodeValue))
-    print('eastBoundLongitude: ' + str( metadata_xml.getElementsByTagName('gmd:eastBoundLongitude')[0].getElementsByTagName('gco:Decimal')[0].firstChild.nodeValue))
-    print('southBoundLatitude: ' + str( metadata_xml.getElementsByTagName('gmd:southBoundLatitude')[0].getElementsByTagName('gco:Decimal')[0].firstChild.nodeValue))
-    print('northBoundLatitude: ' + str( metadata_xml.getElementsByTagName('gmd:northBoundLatitude')[0].getElementsByTagName('gco:Decimal')[0].firstChild.nodeValue))
+    #print('westBoundLongitude: ' + str( metadata_xml.getElementsByTagName('gmd:westBoundLongitude')[0].getElementsByTagName('gco:Decimal')[0].firstChild.nodeValue))
+    #print('eastBoundLongitude: ' + str( metadata_xml.getElementsByTagName('gmd:eastBoundLongitude')[0].getElementsByTagName('gco:Decimal')[0].firstChild.nodeValue))
+    #print('southBoundLatitude: ' + str( metadata_xml.getElementsByTagName('gmd:southBoundLatitude')[0].getElementsByTagName('gco:Decimal')[0].firstChild.nodeValue))
+    #print('northBoundLatitude: ' + str( metadata_xml.getElementsByTagName('gmd:northBoundLatitude')[0].getElementsByTagName('gco:Decimal')[0].firstChild.nodeValue))
 
-    resolution = float( metadata_xml.getElementsByTagName('gmd:MD_Dimension')[0].getElementsByTagName('gmd:resolution')[0].getElementsByTagName('gco:Measure')[0].firstChild.nodeValue)
+    if VERSION == '2.0' :
+        resolution = float( metadata_xml.getElementsByTagName('gmd:MD_Dimension')[0].getElementsByTagName('gmd:resolution')[0].getElementsByTagName('gco:Measure')[0].firstChild.nodeValue)
+
+    if VERSION == '1.0' :
+        resolution = float( metadata_xml.getElementsByTagName('smXML:MD_Dimension')[1].getElementsByTagName('resolution')[0].getElementsByTagName('smXML:Measure')[0].getElementsByTagName('smXML:value')[0].childNodes[0].nodeValue )
+
+    print(resolution)
 
     coordinates = str( metadata_xml.getElementsByTagName('gml:coordinates')[0].childNodes[0].nodeValue )
     print('gml:coordinates: ' + str( coordinates ))
@@ -95,6 +103,10 @@ if __name__ == "__main__":
             i = i + 1
             output_line = str(x) + ' ' + str(y) + ' ' + str(z) + "\n"
             fOut.write( output_line )
+            if i % 100000 == 0 :
+                print(str(i) + ' points processed')
+                if i == 1000000:
+                    break
     fOut.close()
     print('nr of points: ' + str(i))
 

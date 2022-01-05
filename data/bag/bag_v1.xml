@@ -1,0 +1,168 @@
+<smXML:MD_Metadata xmlns:smXML="http://metadata.dgiwg.org/smXML" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gml="http://www.opengis.net/gml">
+  <identificationInfo>
+    <smXML:BAG_DataIdentification>
+      <citation>
+        <smXML:CI_Citation>
+          <title>Surface created from: D:\Islay3\Fieldsheets\Islay3\Islay3\Islay_Swath_2m_Interp4.csar</title>
+          <date>
+            <smXML:CI_Date>
+              <date>2012-08-30</date>
+              <dateType>creation</dateType>
+            </smXML:CI_Date>
+          </date>
+          <citedResponsibleParty>
+            <smXML:CI_ResponsibleParty>
+              <individualName>Marion Harrald</individualName>
+              <organisationName>Marine Scotland Science</organisationName>
+              <positionName>Seabed habitat interpreter</positionName>
+              <role>processor</role>
+            </smXML:CI_ResponsibleParty>
+          </citedResponsibleParty>
+        </smXML:CI_Citation>
+      </citation>
+      <abstract>This data is from a Marine Scotland Science survey off the SW of Islay in August 2012 on MRV Scotia. RESON PDS files have been post-processed using Caris. It has been gridded to 2m.</abstract>
+      <status>completed</status>
+      <spatialRepresentationType>grid</spatialRepresentationType>
+      <language>en</language>
+      <topicCategory>elevation</topicCategory>
+      <extent>
+        <smXML:EX_Extent>
+          <geographicElement>
+            <smXML:EX_GeographicBoundingBox>
+              <westBoundLongitude>-6.93</westBoundLongitude>
+              <eastBoundLongitude>-5.87</eastBoundLongitude>
+              <southBoundLatitude>55.44</southBoundLatitude>
+              <northBoundLatitude>55.80</northBoundLatitude>
+            </smXML:EX_GeographicBoundingBox>
+          </geographicElement>
+        </smXML:EX_Extent>
+      </extent>
+      <verticalUncertaintyType>Unknown</verticalUncertaintyType>
+    </smXML:BAG_DataIdentification>
+  </identificationInfo>
+  <metadataConstraints>
+    <smXML:MD_LegalConstraints>
+      <useConstraints>otherRestrictions</useConstraints>
+      <otherConstraints>none</otherConstraints>
+    </smXML:MD_LegalConstraints>
+  </metadataConstraints>
+  <metadataConstraints>
+    <smXML:MD_SecurityConstraints>
+      <classification>unclassified</classification>
+      <userNote>A modelled predicted tide was used together with a GPS tide and VORF model. True heave and sbet files from POSPac were applied to the data to correct for motion.</userNote>
+    </smXML:MD_SecurityConstraints>
+  </metadataConstraints>
+  <dataQualityInfo>
+    <smXML:DQ_DataQuality>
+      <scope>
+        <smXML:DQ_Scope>
+          <level>dataset</level>
+        </smXML:DQ_Scope>
+      </scope>
+      <lineage>
+        <smXML:LI_Lineage>
+          <source>
+            <smXML:LI_Source>
+              <description>BASE = D:\Islay3\Fieldsheets\Islay3\Islay3\Islay_Swath_2m.csar</description>
+            </smXML:LI_Source>
+          </source>
+          <processStep>
+            <smXML:BAG_ProcessStep>
+              <description>Software: CARIS HIPS and SIPS; Version: 7.1; Method: Interpolation; Parameters: Iteration_5/NumNeighbours = 6</description>
+              <dateTime>2013-07-24T00:00:00Z</dateTime>
+              <processor>
+                <smXML:CI_ResponsibleParty>
+                  <individualName>Administrator</individualName>
+                  <role>processor</role>
+                </smXML:CI_ResponsibleParty>
+              </processor>
+              <trackingId>-1</trackingId>
+            </smXML:BAG_ProcessStep>
+          </processStep>
+        </smXML:LI_Lineage>
+      </lineage>
+    </smXML:DQ_DataQuality>
+  </dataQualityInfo>
+  <spatialRepresentationInfo>
+    <smXML:MD_Georectified>
+      <numberOfDimensions>2</numberOfDimensions>
+      <axisDimensionProperties>
+        <smXML:MD_Dimension>
+          <dimensionName>row</dimensionName>
+          <dimensionSize>21244</dimensionSize>
+          <resolution>
+            <smXML:Measure>
+              <smXML:value>2</smXML:value>
+              <smXML:uom_r/>
+            </smXML:Measure>
+          </resolution>
+        </smXML:MD_Dimension>
+      </axisDimensionProperties>
+      <axisDimensionProperties>
+        <smXML:MD_Dimension>
+          <dimensionName>column</dimensionName>
+          <dimensionSize>32582</dimensionSize>
+          <resolution>
+            <smXML:Measure>
+              <smXML:value>2</smXML:value>
+              <smXML:uom_r/>
+            </smXML:Measure>
+          </resolution>
+        </smXML:MD_Dimension>
+      </axisDimensionProperties>
+      <cellGeometry>point</cellGeometry>
+      <transformationParameterAvailability>false</transformationParameterAvailability>
+      <checkPointAvailability>0</checkPointAvailability>
+      <cornerPoints>
+        <gml:Point>
+          <gml:coordinates decimal="." cs="," ts=" ">630858,6146244 696020,6188730</gml:coordinates>
+        </gml:Point>
+      </cornerPoints>
+    </smXML:MD_Georectified>
+  </spatialRepresentationInfo>
+  <referenceSystemInfo>
+    <smXML:MD_CRS>
+      <projection>
+        <smXML:RS_Identifier>
+          <code>UTM</code>
+        </smXML:RS_Identifier>
+      </projection>
+      <ellipsoid>
+        <smXML:RS_Identifier>
+          <code>WGS84</code>
+        </smXML:RS_Identifier>
+      </ellipsoid>
+      <datum>
+        <smXML:RS_Identifier>
+          <code>WGS84</code>
+        </smXML:RS_Identifier>
+      </datum>
+      <projectionParameters>
+        <smXML:MD_ProjectionParameters>
+          <zone>29</zone>
+        </smXML:MD_ProjectionParameters>
+      </projectionParameters>
+    </smXML:MD_CRS>
+  </referenceSystemInfo>
+  <referenceSystemInfo>
+    <smXML:MD_CRS>
+      <datum>
+        <smXML:RS_Identifier>
+          <code>chart datum</code>
+        </smXML:RS_Identifier>
+      </datum>
+    </smXML:MD_CRS>
+  </referenceSystemInfo>
+  <language>en</language>
+  <contact>
+    <smXML:CI_ResponsibleParty>
+      <individualName>Marion Harrald</individualName>
+      <organisationName>Marine Scotland Science</organisationName>
+      <positionName>Seabed habitat interpreter</positionName>
+      <role>processor</role>
+    </smXML:CI_ResponsibleParty>
+  </contact>
+  <dateStamp>2013-07-24</dateStamp>
+  <metadataStandardName>ISO 19115</metadataStandardName>
+  <metadataStandardVersion>2003</metadataStandardVersion>
+</smXML:MD_Metadata>

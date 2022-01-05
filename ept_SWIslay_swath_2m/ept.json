@@ -1,0 +1,25 @@
+{
+"bounds": [640594.000000, 6177642.000000, -150.700000, 651934.000000, 6188982.000000, 11189.300000],
+"boundsConforming": [640594.000000, 6177642.000000, -150.700000, 641358.000000, 6188982.000000, -62.900000],
+"dataType": "laszip",
+"hierarchyType": "json",
+"points": 1000000,
+"span": 128,
+"version": "1.0.0",
+"schema": [
+	{"name": "X", "type": "float", "scale": 1, "offset": 646264, "size": 8, "count": 1000000, "maximum": 641358, "minimum": 640594, "mean": 641150, "stddev": 147.065, "variance": 21628.1},
+	{"name": "Y", "type": "float", "scale": 1, "offset": 6.18331e+06, "size": 8, "count": 1000000, "maximum": 6.18898e+06, "minimum": 6.17764e+06, "mean": 6.18216e+06, "stddev": 2947.53, "variance": 8.68792e+06},
+	{"name": "Z", "type": "float", "scale": 0.1, "offset": 5519.3, "size": 8, "count": 1000000, "maximum": -62.9, "minimum": -150.7, "mean": -99.0383, "stddev": 19.0564, "variance": 363.147},
+	{"name": "Intensity", "type": "unsigned", "size": 2, "count": 1000000, "maximum": 0, "minimum": 0, "mean": 0, "stddev": 0, "variance": 0},
+	{"name": "ReturnNumber", "type": "unsigned", "size": 1, "count": 1000000, "maximum": 0, "minimum": 0, "mean": 0, "stddev": 0, "variance": 0},
+	{"name": "NumberOfReturns", "type": "unsigned", "size": 1, "count": 1000000, "maximum": 0, "minimum": 0, "mean": 0, "stddev": 0, "variance": 0},
+	{"name": "ScanDirectionFlag", "type": "unsigned", "size": 1, "count": 1000000, "maximum": 0, "minimum": 0, "mean": 0, "stddev": 0, "variance": 0},
+	{"name": "PointSourceId", "type": "unsigned", "size": 2, "count": 1000000, "maximum": 0, "minimum": 0, "mean": 0, "stddev": 0, "variance": 0},
+	{"name": "Classification", "type": "unsigned", "size": 1, "counts": [ {"value": 0, "count": 1000000}], "count": 1000000, "maximum": 0, "minimum": 0, "mean": 0, "stddev": 0, "variance": 0},
+	{"name": "EdgeOfFlightLine", "type": "unsigned", "size": 1, "count": 1000000, "maximum": 0, "minimum": 0, "mean": 0, "stddev": 0, "variance": 0},
+	{"name": "ScanAngleRank", "type": "float", "size": 4, "count": 1000000, "maximum": 0, "minimum": 0, "mean": 0, "stddev": 0, "variance": 0},
+	{"name": "UserData", "type": "unsigned", "size": 1, "count": 1000000, "maximum": 0, "minimum": 0, "mean": 0, "stddev": 0, "variance": 0}
+],
+"srs": {
+}
+}
